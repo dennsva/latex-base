@@ -1,3 +1,3 @@
 build:
 	mkdir -p build
-	lualatex -output-directory=build main.tex
+	lualatex -interaction=nonstopmode -output-directory=build main.tex
