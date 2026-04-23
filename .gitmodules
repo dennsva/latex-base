@@ -1,0 +1,3 @@
+[submodule "latex-templates"]
+	path = latex-templates
+	url = git@github.com:astrobatrachus/latex-templates.git
