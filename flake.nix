@@ -14,8 +14,12 @@
     eachSystem allSystems (
       system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [ "brill" ];
+        };
         tex = pkgs.texlive.combine { inherit (pkgs.texlive) scheme-small latex-bin latexmk; };
+        fontsConf = pkgs.makeFontsConf { fontDirectories = [ pkgs.brill ]; };
       in
       rec {
         packages = {
@@ -24,6 +28,8 @@
             src = self;
             buildInputs = [
               pkgs.coreutils
+              pkgs.fontconfig
+              pkgs.brill
               tex
             ];
             phases = [
@@ -33,8 +39,10 @@
             ];
             buildPhase = ''
               export PATH="${pkgs.lib.makeBinPath buildInputs}";
-              mkdir -p .cache/texmf-var/luatex-cache/luaotfload
+              export OSFONTDIR=${pkgs.brill}/share/fonts/truetype
+
               env HOME=$(mktemp -d) \
+                FONTCONFIG_FILE=${fontsConf} \
                 SOURCE_DATE_EPOCH=${toString self.lastModified} \
                 latexmk -interaction=nonstopmode -pdf -lualatex \
                 -pretex="\pdfvariable suppressoptionalinfo 512\relax" \
