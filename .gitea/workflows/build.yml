@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: nix
     steps:
+      - name: Debug
+        run: which node && node --version && which env && ls /usr/bin/
+
       - uses: https://gitea.com/actions/checkout@v6
 
       - name: Build document
