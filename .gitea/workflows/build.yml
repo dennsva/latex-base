@@ -8,13 +8,13 @@ jobs:
   build:
     runs-on: nix
     steps:
-      - uses: actions/checkout@v3
+      - uses: https://gitea.com/actions/checkout@v6
 
       - name: Build document
         run: just build-nix
 
       - name: Upload PDF
-        uses: actions/upload-artifact@v3
+        uses: https://gitea.com/actions/gitea-upload-artifact@v4
         with:
           name: document
           path: build-nix/main.pdf
