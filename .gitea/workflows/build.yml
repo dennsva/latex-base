@@ -8,7 +8,10 @@ jobs:
   build:
     runs-on: nix
     steps:
-      - name: Debug
+      - name: Debug 0
+        run: ls /bin && ls /nix/var/nix/profiles/default/bin
+
+      - name: Debug 1
         run: which node && node --version && which env && ls /usr/bin/
 
       - uses: https://gitea.com/actions/checkout@v6
