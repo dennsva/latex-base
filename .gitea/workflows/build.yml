@@ -1,0 +1,20 @@
+name: Build Document
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: nix
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build document
+        run: just build-nix
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v3
+        with:
+          name: document
+          path: build-nix/main.pdf
